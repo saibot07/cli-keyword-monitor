@@ -29,9 +29,19 @@ def main():
     parser.add_argument('--frequency', type=int, default=60, help="Check frequency in seconds. Default is 60.")
     
     args = parser.parse_args()
-    keywords = [kw.strip() for kw in args.keywords.split(',')]
+
+    # Fix: Ensure keywords argument is not empty after splitting
+    if not args.keywords.strip():
+        print("Error: --keywords argument cannot be empty.")
+        return
+
+    keywords = [kw.strip() for kw in args.keywords.split(',') if kw.strip()]
+
+    if not keywords:
+        print("Error: No valid keywords provided after parsing.")
+        return
+
     frequency = args.frequency
-    
     monitor_keywords(keywords, frequency)
 
 if __name__ == "__main__":
